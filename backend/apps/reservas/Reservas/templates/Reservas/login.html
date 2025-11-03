@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | Sistema de Reservas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700" rel="stylesheet" />
+  <style>
+    /* Reset y base */
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: auto;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1f2029 0%, #102770 100%);
+      color: #c4c3ca;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    a {
+      color: #ffeba7;
+      text-decoration: none;
+    }
+
+    .container {
+      background: #2a2b38cc;
+      border-radius: 12px;
+      width: 400px;
+      max-width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      overflow: hidden;
+      position: relative;
+      perspective: 1200px;
+    }
+
+    #reg-log {
+      display: none;
+    }
+
+    .card-wrapper {
+      width: 100%;
+      min-height: 100%;
+      transition: transform 0.8s ease-in-out;
+      transform-style: preserve-3d;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #reg-log:checked ~ .container .card-wrapper {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat.svg') bottom center no-repeat;
+      background-size: 300%;
+      padding: 40px 30px;
+      border-radius: 12px;
+      width: 100%;
+      backface-visibility: hidden;
+      position: relative;
+      min-height: 100%;
+      height: auto;
+      box-sizing: border-box;
+      color: #fff;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      background-color: #2a2b38;
+    }
+
+    h4 {
+      margin: 0 0 30px;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #ffeba7;
+      text-align: center;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .form-style {
+      width: 100%;
+      padding: 14px 45px;
+      border-radius: 6px;
+      border: none;
+      background: #1f2029;
+      color: #c4c3ca;
+      font-size: 1rem;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.7);
+      transition: background-color 0.3s ease;
+    }
+
+    .form-style:focus {
+      outline: none;
+      background: #272935;
+      color: #ffeba7;
+    }
+
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: #ffeba7;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 6px;
+      border: none;
+      background: #ffeba7;
+      color: #102770;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(255, 235, 167, 0.5);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #102770;
+      color: #ffeba7;
+      box-shadow: 0 6px 15px rgba(16, 39, 112, 0.7);
+    }
+
+    .toggle-label {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #ffeba7;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+
+    .toggle-label:hover {
+      color: #fff;
+    }
+
+    .error {
+      background: #ff6b6b;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(255, 107, 107, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <input type="checkbox" id="reg-log" name="reg-log" />
+
+  <div class="container">
+    <div class="card-wrapper">
+
+      <!-- Login -->
+      <div class="card-front">
+        <form method="POST" novalidate>
+          {% csrf_token %}
+          <h4>Iniciar Sesión</h4>
+
+          {% if error %}
+            <div class="error">{{ error }}</div>
+          {% endif %}
+
+          <div class="form-group">
+            <i class="input-icon uil uil-at"></i>
+            <input type="email" name="logemail" class="form-style" placeholder="Correo electrónico" required />
+          </div>
+
+          <div class="form-group">
+            <i class="input-icon uil uil-lock-alt"></i>
+            <input type="password" name="logpass" class="form-style" placeholder="Contraseña" required />
+          </div>
+
+          <button type="submit" class="btn">Ingresar</button>
+          <label for="reg-log" class="toggle-label">¿No tienes cuenta? Regístrate</label>
+        </form>
+      </div>
+
+      <!-- Registro -->
+      <div class="card-back">
+        <form method="POST" novalidate>
+          {% csrf_token %}
+          <h4>Registrarse</h4>
+
+          {% if error %}
+            <div class="error">{{ error }}</div>
+          {% endif %}
+
+          <div class="form-group">
+            <i class="input-icon uil uil-user"></i>
+            <input type="text" name="regname" class="form-style" placeholder="Nombre completo" required />
+          </div>
+
+          <div class="form-group">
+            <i class="input-icon uil uil-at"></i>
+            <input type="email" name="regemail" class="form-style" placeholder="Correo electrónico" required />
+          </div>
+
+          <div class="form-group">
+            <i class="input-icon uil uil-lock-alt"></i>
+            <input type="password" name="regpass" class="form-style" placeholder="Contraseña" required />
+          </div>
+
+          <button type="submit" class="btn">Registrarse</button>
+          <label for="reg-log" class="toggle-label">¿Ya tienes cuenta? Inicia sesión</label>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
+

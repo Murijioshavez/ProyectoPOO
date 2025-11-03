@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservar Espacio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1976d2;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        button {
+            margin-top: 25px;
+            background-color: #1976d2;
+            color: white;
+            padding: 12px;
+            border: none;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #125ea2;
+        }
+
+        .msg {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .msg-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .msg-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Reservar Espacio Académico</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="msg msg-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% if form.errors %}
+        <div class="msg msg-error">
+            <strong>Errores en el formulario:</strong>
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="id_nombre_completo">Nombre completo</label>
+        {{ form.nombre_completo }}
+
+        <label for="id_nombre_usuario">Correo institucional</label>
+        {{ form.nombre_usuario }}
+
+        <label for="id_espacio">Espacio (Salón)</label>
+        {{ form.espacio }}
+
+        <label for="id_fecha">Fecha</label>
+        {{ form.fecha }}
+
+        <label for="id_hora_inicio">Hora de inicio</label>
+        {{ form.hora_inicio }}
+
+        <label for="id_hora_fin">Hora de fin</label>
+        {{ form.hora_fin }}
+
+        <label for="id_motivo">Motivo de la reserva</label>
+        {{ form.motivo }}
+
+        <label for="id_necesidades">Necesidades adicionales (opcional)</label>
+        {{ form.necesidades }}
+
+        <button type="submit">Confirmar reserva</button>
+    </form>
+</div>
+
+<!-- Calendario interactivo -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    flatpickr("#datepicker", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        locale: "es"
+    });
+</script>
+
+</body>
+</html>

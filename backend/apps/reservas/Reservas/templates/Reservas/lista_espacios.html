@@ -1,0 +1,7 @@
+<h2>Espacios Disponibles</h2>
+<ul>
+  {% for espacio in espacios %}
+    <li>{{ espacio.nombre }} - <a href="{% url 'reservar_espacio' %}">Reservar</a></li>
+  {% endfor %}
+  <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+</ul>

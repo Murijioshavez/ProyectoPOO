@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Reservas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-color: #d32f2f;
+            --bg-color: #f0f4f8;
+            --text-color: #333;
+            --success-bg: #dff0d8;
+            --success-text: #3c763d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 30px;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 720px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+
+        .msg {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .reserva {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+        }
+
+        .reserva:last-child {
+            border-bottom: none;
+        }
+
+        .reserva p {
+            margin: 6px 0;
+        }
+
+        form {
+            display: inline;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #b71c1c;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function confirmarEliminacion() {
+            return confirm("¿Estás seguro de que deseas eliminar esta reserva?");
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Eliminar Mis Reservas</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="msg" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% if reservas %}
+        {% for reserva in reservas %}
+            <div class="reserva">
+                <p><strong>{{ reserva.espacio.nombre }}</strong></p>
+                <p>{{ reserva.fecha }} de {{ reserva.hora_inicio }} a {{ reserva.hora_fin }}</p>
+                <p>Motivo: {{ reserva.motivo }}</p>
+                <form method="post" onsubmit="return confirmarEliminacion();">
+                    {% csrf_token %}
+                    <input type="hidden" name="reserva_id" value="{{ reserva.id }}">
+                    <button type="submit" aria-label="Eliminar reserva de {{ reserva.espacio.nombre }}">Eliminar</button>
+                </form>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay reservas asociadas a este correo.</p>
+    {% endif %}
+
+    <a href="{% url 'inicio' %}" class="back-link">← Volver al inicio</a>
+</div>
+
+</body>
+</html>

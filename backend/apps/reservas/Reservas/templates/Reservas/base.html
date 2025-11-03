@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Gestión de Reservas{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'Reservas/css/estilo.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'Reservas/img/favicon.ico' %}">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+        }
+        header {
+            background-color: #1976d2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        footer {
+            background-color: #e3f2fd;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Gestión de Reservas Académicas</h1>
+</header>
+<main>
+    {% block content %}{% endblock %}
+</main>
+<footer>
+    Proyecto Django – Instituto Key &copy; 2025
+</footer>
+</body>
+</html>

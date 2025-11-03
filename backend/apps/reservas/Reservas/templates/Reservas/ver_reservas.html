@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendario de Reservas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .calendar-wrap {
+            max-width: 950px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px #0002;
+            padding: 24px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header h1 {
+            font-size: 2em;
+            color: #1976d2;
+            margin: 0;
+            flex-grow: 1;
+        }
+        .nav-button {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 0 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-button:hover {
+            background-color: #1565c0;
+        }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .calendar-table th,
+        .calendar-table td {
+            width: 14.28%;
+            min-height: 90px;
+            border: 1px solid #eee;
+            vertical-align: top;
+            padding: 6px;
+            box-sizing: border-box;
+        }
+        .calendar-table th {
+            background: #1976d2;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1.05em;
+        }
+        .calendar-table td {
+            background: #fafbfc;
+            position: relative;
+            height: 100px;
+        }
+        .calendar-table .hoy {
+            border: 2px solid #388e3c;
+            background: #e8f5e9;
+        }
+        .day-number {
+            font-weight: bold;
+            color: #1976d2;
+            font-size: 1.15em;
+            margin-bottom: 2px;
+            display: block;
+        }
+        .reserva {
+            background: #e3f2fd;
+            margin: 4px 0;
+            padding: 4px 6px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #333;
+            border-left: 4px solid #1976d2;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .reserva span.hora {
+            font-weight: normal;
+            font-size: 0.8em;
+            color: #666;
+            display: block;
+        }
+        .reserva .usuario {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #333;
+        }
+        .reserva .motivo {
+            font-size: 0.85em;
+            color: #555;
+            font-style: italic;
+            white-space: normal;
+        }
+        .reserva.tuyo {
+            background: #c8e6c9;
+            border-left: 4px solid #388e3c;
+        }
+        .empty {
+            background: #f4f4f4;
+        }
+        @media (max-width: 800px) {
+            .calendar-wrap { padding: 6px; }
+            .calendar-table th, .calendar-table td { font-size: 0.9em; }
+            .reserva { font-size: 0.8em; }
+            .reserva span.hora { font-size: 0.7em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-wrap">
+        <header>
+            <a href="?month={{ prev_month }}&year={{ prev_year }}{% if correo_usuario %}&correo={{ correo_usuario }}{% endif %}" class="nav-button">&lt; Anterior</a>
+            <h1>{{ mes_nombre }} {{ year }}</h1>
+            <a href="?month={{ next_month }}&year={{ next_year }}{% if correo_usuario %}&correo={{ correo_usuario }}{% endif %}" class="nav-button">Siguiente &gt;</a>
+        </header>
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th>Domingo</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for semana in semanas %}
+                <tr>
+                    {% for dia in semana %}
+                    {% if dia.numero %}
+                        <td class="{% if dia.hoy %}hoy{% endif %}">
+                            <span class="day-number">{{ dia.numero }}</span>
+                            {% for reserva in dia.reservas %}
+                                <div class="reserva {% if reserva.tuyo %}tuyo{% endif %}" title="{{ reserva.espacio }} - {{ reserva.usuario }} - {{ reserva.motivo }}">
+                                    <span class="hora">{{ reserva.hora_inicio|time:"H:i" }} - {{ reserva.hora_fin|time:"H:i" }}</span>
+                                    <strong>{{ reserva.espacio }}</strong><br>
+                                    <span class="usuario">{{ reserva.usuario }}</span><br>
+                                    <em class="motivo">{{ reserva.motivo }}</em>
+                                </div>
+                            {% endfor %}
+                        </td>
+                    {% else %}
+                        <td class="empty"></td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
