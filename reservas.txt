@@ -1,0 +1,13 @@
+Salón 201, 2025-05-27, 18:55:00-19:12:00, nose.nose@keyinstitute.edu.sv
+Salón 202, 2025-05-27, 19:02:00-20:03:00, nose.nose@keyinstitute.edu.sv
+Salón 201, 2025-06-09, 08:15:00-09:00:00, nose.nose@keyinstitute.edu.sv
+Salón 202, 2025-06-09, 01:00:00-02:00:00, nose.nose@keyinstitute.edu.sv
+Salón 201, 2025-06-10, 08:00:00-09:00:00, jorge.cortez@keyinstitute.edu.sv
+Salón 206, 2025-06-10, 03:30:00-04:30:00, Alfredo Enmanuel Cortez Martínez (alfredo.cortez@keyinstitute.edu.sv) - Estudiar para examen de física
+Salón 202, 2025-06-11, 08:00:00-09:00:00, Alfredo Enmanuel Cortez Martínez (alfredo.cortez@keyinstitute.edu.sv) - fisica
+Salón 204, 2025-06-10, 10:00:00-11:00:00, Rafael Santos (rafael.santos@keyinstitute.edu.sv) - cálculo
+Salón 201, 2025-06-10, 11:30:00-12:30:00, Rafael Santos (rafael.santos@keyinstitute.edu.sv) - Reunión grupo Toy Project
+Salón 202, 2025-06-12, 13:30:00-14:00:00, Alfredo Enmanuel Cortez Martínez (alfredo.cortez@keyinstitute.edu.sv) - N/A
+Salón 201, 2025-06-26, 15:15:00-15:30:00, Rafael Santos (nose.nose@keyinstitute.edu.sv) - 
+Salón 205, 2025-06-24, 14:00:00-15:30:00, Andres Aviles (jose.aviles@keyinstitute.edu.sv) - Física expo
+Salón 202, 2025-06-26, 14:00:00-15:30:00, Alfredo Enmanuel Cortez Martínez (alfredo.cortez@keyinstitute.edu.sv) - Expo juguete
