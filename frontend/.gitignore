@@ -1,23 +1,64 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ========================================================
+# 🔒 GITIGNORE - Proyecto Django + React
+# ========================================================
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# ======== 🐍 PYTHON / DJANGO ========
+venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+.env
+.env.*
+*.log
+media/
+staticfiles/
+static/
+*.pot
+*.pyc
+*.pyo
+*.pyd
 
-# testing
-/coverage
+# ======== ⚙️ MIGRACIONES ========
+*/migrations/__pycache__/
+*/migrations/*.py
 
-# production
-/build
-
-# misc
-.DS_Store
+# ======== ⚛️ NODE / REACT ========
+node_modules/
+build/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+coverage/
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# ======== 🧱 COMPILADOS O TEMPORALES ========
+*.exe
+*.dll
+*.so
+*.dylib
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# ======== 🧠 IDE / EDITORES ========
+.vscode/
+.idea/
+*.code-workspace
+
+# ======== 🧰 SISTEMA OPERATIVO ========
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ======== 🚀 DEPLOY / CONTENEDORES (si se usa) ========
+*.pid
+*.seed
+*.pid.lock
+__pycache__/
