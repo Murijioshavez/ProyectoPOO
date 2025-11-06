@@ -58,44 +58,6 @@ const Login: React.FC = () => {
         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Iniciar Sesión</h2>
         <p className="text-center mb-8">Sistema de Gestión de Reservas</p>
 
-        {/* Tu formulario tradicional (opcional o temporal) */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setMsg("Para este proyecto usaremos Google. Usa el botón de abajo.");
-          }}
-        >
-          <div className="space-y-4">
-            <div>
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                placeholder="Contraseña"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition duration-200"
-            >
-              Iniciar Sesión
-            </button>
-          </div>
-        </form>
-
-        {/* Separador */}
-        <div className="my-6 flex items-center">
-          <div className="flex-1 border-t border-gray-200" />
-          <span className="px-3 text-gray-500 text-sm">o</span>
-          <div className="flex-1 border-t border-gray-200" />
-        </div>
-
         {/* Botón Google */}
         <button
           onClick={onGoogleSignIn}
