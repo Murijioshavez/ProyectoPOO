@@ -1,89 +1,78 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
 interface LayoutProps {
   children: React.ReactNode;
-  title?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, title = "Sistema de Reservas de Salas" }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-[#E5E5E8] flex flex-col"> {/* Cloud Gray */}
-      {/* Header con azul sólido */}
-      <header className="bg-[#006DFF] text-white shadow-lg"> {/* LCD Blue sólido */}
-        <div className="container mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-b from-black to-[#006DFF] flex flex-col text-white">
+      {/* HEADER */}
+      <header className="bg-gradient-to-b from-black to-[#006DFF] text-white shadow-lg relative overflow-visible">
+        <div className="container mx-auto px-15 py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            <Link to="/" className="text-2xl font-bold mb-2 md:mb-0 hover:opacity-80 transition flex items-center">
-              <img src="/keyblanco.png" alt="Logo" className="h-8 w-8 mr-2" />
-              Reservas de Salas
+            {/* Logo grande sin aumentar el alto del header */}
+            <Link
+              to="/"
+              className="flex items-center justify-center md:justify-start mb-2 md:mb-0 relative"
+            >
+              <img
+                src="/salalogos.png"
+                alt="Logo"
+                className="h-8 w-9 scale-[4] -mt-25 origin-top drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]"
+              />
             </Link>
-            
-            <nav className="flex flex-wrap gap-2">
-              <Link 
-                to="/" 
-                className={`px-4 py-2 rounded-lg transition duration-200 font-semibold ${
-                  isActive('/') 
-                    ? 'bg-[#31F483] text-[#000] shadow-lg'  // Mecha Green
-                    : 'hover:bg-[#F5F500] hover:text-[#000]' // Spark Yellow
-                }`}
-              >
-                🏠 Inicio
-              </Link>
-              <Link 
-                to="/reservas" 
-                className={`px-4 py-2 rounded-lg transition duration-200 font-semibold ${
-                  isActive('/reservas') 
-                    ? 'bg-[#31F483] text-[#000] shadow-lg'  // Mecha Green
-                    : 'hover:bg-[#F5F500] hover:text-[#000]' // Spark Yellow
-                }`}
-              >
-                📚 Salas
-              </Link>
-              <Link 
-                to="/reservas/crear" 
-                className={`px-4 py-2 rounded-lg transition duration-200 font-semibold ${
-                  isActive('/reservas/crear') 
-                    ? 'bg-[#31F483] text-[#000] shadow-lg'  // Mecha Green
-                    : 'hover:bg-[#F5F500] hover:text-[#000]' // Spark Yellow
-                }`}
-              >
-                ➕ Nueva Reserva
-              </Link>
-              <Link 
-                to="/login" 
-                className={`px-4 py-2 rounded-lg transition duration-200 font-semibold ${
-                  isActive('/login') 
-                    ? 'bg-[#31F483] text-[#000] shadow-lg'  // Mecha Green
-                    : 'hover:bg-[#F5F500] hover:text-[#000]' // Spark Yellow
-                }`}
-              >
-                🔐 Login
-              </Link>
+
+            {/* Navegación */}
+            <nav className="flex flex-wrap gap-2 mt-2 md:mt-0 justify-center md:justify-end">
+              {[
+                { path: "/", label: "Inicio" },
+                { path: "/reservas", label: "Salas" },
+                { path: "/reservas/crear", label: "Nueva Reserva" },
+                { path: "/login", label: "Iniciar Sesión" },
+              ].map(({ path, label }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  className={`px-5 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                    isActive(path)
+                      ? "bg-[#31F483] text-black shadow-lg scale-105"
+                      : "hover:bg-[#F5F500] hover:text-black"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
             </nav>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1 container mx-auto px-4 py-8">
-        {children}
-      </main>
+      {/* MAIN */}
+      <main className="flex-1 container mx-auto px-4 py-8">{children}</main>
 
-      {/* Footer */}
-      <footer className="bg-[#000] text-white py-6"> {/* Negro */}
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <h3 className="text-lg font-bold text-[#F5F500]">⚡ Reservas de Salas</h3>
-              <p className="text-[#CBCBD4]">Sistema de gestión para estudiantes</p> {/* Gray Matter */}
+      {/* FOOTER */}
+      <footer className="bg-gradient-to-b from-black to-[#006DFF] text-white py-6 mt-8 shadow-inner">
+        <div className="container mx-auto px-4 text-center md:text-left">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-3">
+              <img src="/keyblanco.png" alt="Logo" className="h-7 w-7" />
+              <div>
+                <h3 className="text-lg font-bold text-[#F5F500]">
+                  Reservas de Salas
+                </h3>
+                <p className="text-[#CBCBD4] text-sm">
+                  Sistema de gestión para estudiantes
+                </p>
+              </div>
             </div>
-            <div className="text-[#CBCBD4]">
-              <p>&copy; 2024 Universidad - Todos los derechos reservados</p>
-              <p className="text-sm mt-1">📧 contacto@universidad.edu</p>
+            <div className="text-[#CBCBD4] text-sm text-center md:text-right">
+              <p>&copy; keyinstitute</p>
+              <p className="mt-1">contacto@universidad.edu</p>
             </div>
           </div>
         </div>

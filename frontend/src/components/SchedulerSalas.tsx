@@ -43,11 +43,11 @@ const SchedulerSalas: React.FC = () => {
     { id: "sala7", name: "Sala 7", color: "#ffffff", bgColor: "#ffbb3b" },
   ];
 
-  // Eventos (fijos por ahora)
+  // Eventos de ejemplo
   const eventos: Evento[] = [
     {
       title: "Mentoría con Juan Pérez",
-      start: new Date(2025, 9, 30, 9, 0),
+      start: new Date(2025, 10, 6, 9, 0),
       end: new Date(2025, 9, 30, 10, 0),
       salaId: "sala1",
     },
@@ -74,14 +74,15 @@ const SchedulerSalas: React.FC = () => {
       style: {
         backgroundColor,
         color,
-        borderRadius: "4px",
+        borderRadius: "6px",
         border: "none",
         padding: "4px 6px",
+        fontWeight: 500,
       },
     };
   };
 
-  // ---- Config general ----
+  // ---- Textos en español ----
   const messages = useMemo(
     () => ({
       today: "Hoy",
@@ -97,21 +98,57 @@ const SchedulerSalas: React.FC = () => {
   );
 
   return (
-    <div style={{ height: "85vh", padding: "20px" }}>
-      <Calendar
-        localizer={localizer}
-        events={eventos}
-        defaultView="day"
-        views={["day"]}
-        step={30}
-        timeslots={2}
-        min={new Date(2025, 9, 30, 8, 0)}
-        max={new Date(2025, 9, 30, 20, 0)}
-        style={{ height: "100%" }}
-        eventPropGetter={eventPropGetter}
-        culture="es"
-        messages={messages}
-      />
+    <div className="min-h-screen bg-[#E5E5E8] flex flex-col items-center py-8">
+      {/* Encabezado */}
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-md p-6 mb-6 border border-gray-200">
+        <h1 className="text-2xl font-bold text-[#006DFF] mb-2">
+          Programación de Salas
+        </h1>
+        <p className="text-gray-600 text-sm">
+          Visualiza las reservas actuales de las diferentes salas de estudio.
+        </p>
+      </div>
+
+      {/* Leyenda de salas */}
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-md p-4 mb-6 border border-gray-200">
+        <h2 className="text-lg font-semibold text-gray-800 mb-3">
+          Leyenda de Salas
+        </h2>
+        <div className="flex flex-wrap gap-3">
+          {salas.map((sala) => (
+            <div
+              key={sala.id}
+              className="flex items-center gap-2 text-sm text-gray-700"
+            >
+              <span
+                className="w-4 h-4 rounded"
+                style={{ backgroundColor: sala.bgColor }}
+              ></span>
+              {sala.name}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Calendario */}
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-md border border-gray-200 p-4">
+        <div style={{ height: "75vh" }}>
+          <Calendar
+            localizer={localizer}
+            events={eventos}
+            defaultView="day"
+            views={["day"]}
+            step={30}
+            timeslots={2}
+            min={new Date(2025, 9, 30, 8, 0)}
+            max={new Date(2025, 9, 30, 20, 0)}
+            style={{ height: "100%" }}
+            eventPropGetter={eventPropGetter}
+            culture="es"
+            messages={messages}
+          />
+        </div>
+      </div>
     </div>
   );
 };
