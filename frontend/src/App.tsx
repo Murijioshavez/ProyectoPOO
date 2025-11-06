@@ -50,15 +50,15 @@ const MainApp: React.FC = () => {
       <section className="bg-white rounded-2xl shadow-md p-8 border border-[#31F483]">
         <h3 className="text-2xl font-bold text-[#000] mb-6">Resumen Rápido</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gradient-to-br from-[#006DFF] to-[#8E4BFB] text-white p-6 rounded-xl text-center shadow-md">
+          <div className="bg-[#006DFF] text-white p-6 rounded-xl text-center shadow-md">
             <h4 className="text-3xl font-bold mb-2">5</h4>
             <p className="text-blue-100 font-medium">Reservas de Hoy</p>
           </div>
-          <div className="bg-gradient-to-br from-[#31F483] to-[#F5F500] text-[#000] p-6 rounded-xl text-center shadow-md">
+          <div className="bg-[#31F483] text-[#000] p-6 rounded-xl text-center shadow-md">
             <h4 className="text-3xl font-bold mb-2">12</h4>
             <p className="text-gray-800 font-medium">Salas Activas</p>
           </div>
-          <div className="bg-gradient-to-br from-[#F5F500] to-[#FF6B6B] text-[#000] p-6 rounded-xl text-center shadow-md">
+          <div className="bg-[#F5F500] text-[#000] p-6 rounded-xl text-center shadow-md">
             <h4 className="text-3xl font-bold mb-2">3</h4>
             <p className="text-gray-800 font-medium">Reservas Pendientes</p>
           </div>
