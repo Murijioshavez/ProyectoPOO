@@ -10,25 +10,30 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-[#006DFF] flex flex-col text-white">
-      {/* HEADER */}
-      <header className="bg-gradient-to-b from-black to-[#006DFF] text-white shadow-lg relative overflow-visible">
-        <div className="container mx-auto px-15 py-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            {/* Logo grande sin aumentar el alto del header */}
+    <div className="min-h-screen bg-gradient-to-br from-[#000000] via-[#0A1428] to-[#006DFF] flex flex-col text-white overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#006DFF] rounded-full blur-[100px] opacity-25"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-[400px] h-[400px] bg-[#8E4BFB] rounded-full blur-[90px] opacity-20"></div>
+        <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-[#31E083] rounded-full blur-[70px] opacity-15"></div>
+      </div>
+
+      {/* HEADER*/}
+      <header className="bg-transparent text-white pt-6 pb-4 relative z-10">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+            {/*logo*/}
             <Link
               to="/"
-              className="flex items-center justify-center md:justify-start mb-2 md:mb-0 relative"
+              className="flex items-center justify-center lg:justify-start mb-4 lg:mb-0 relative group"
             >
               <img
-                src="/salalogos.png"
-                alt="Logo"
-                className="h-8 w-9 scale-[4] -mt-25 origin-top drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]"
+                src="/reservas.png"
+                alt="KeyInstitute - Sistema de Reservas"
+                className="w-16 h-16 lg:w-20 lg:h-20 object-contain transition-all duration-500 group-hover:brightness-125 group-hover:scale-110 drop-shadow-2xl"
               />
             </Link>
-
             {/* Navegación */}
-            <nav className="flex flex-wrap gap-2 mt-2 md:mt-0 justify-center md:justify-end">
+            <nav className="flex flex-wrap gap-2 justify-center lg:justify-end relative">
               {[
                 { path: "/", label: "Inicio" },
                 { path: "/reservas", label: "Salas" },
@@ -38,10 +43,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <Link
                   key={path}
                   to={path}
-                  className={`px-5 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                  className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
                     isActive(path)
-                      ? "bg-[#31F483] text-black shadow-lg scale-105"
-                      : "hover:bg-[#F5F500] hover:text-black"
+                      ? "bg-gradient-to-r from-[#31E083] to-[#F5F500] text-gray-900 shadow-lg"
+                      : "bg-gray-800/80 text-white border border-gray-600 hover:bg-gradient-to-r hover:from-[#006DFF] hover:to-[#8E4BFB] hover:border-transparent hover:shadow-lg hover:shadow-[#006DFF]/30"
                   }`}
                 >
                   {label}
@@ -52,27 +57,34 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </header>
 
-      {/* MAIN */}
-      <main className="flex-1 container mx-auto px-4 py-8">{children}</main>
+      {/* MAIN CONTENT */}
+      <main className="flex-1 container mx-auto px-6 py-8 relative z-10">
+        <div className="backdrop-blur-md bg-gray-800/60 rounded-3xl border border-gray-600 shadow-2xl p-8 transition-all duration-500 hover:border-[#006DFF] hover:shadow-[0_0_40px_rgba(0,109,255,0.2)]">
+          {children}
+        </div>
+      </main>
 
-      {/* FOOTER */}
-      <footer className="bg-gradient-to-b from-black to-[#006DFF] text-white py-6 mt-8 shadow-inner">
-        <div className="container mx-auto px-4 text-center md:text-left">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-3">
-              <img src="/keyblanco.png" alt="Logo" className="h-7 w-7" />
-              <div>
-                <h3 className="text-lg font-bold text-[#F5F500]">
-                  Reservas de Salas
-                </h3>
-                <p className="text-[#CBCBD4] text-sm">
-                  Sistema de gestión para estudiantes
-                </p>
-              </div>
-            </div>
-            <div className="text-[#CBCBD4] text-sm text-center md:text-right">
-              <p>&copy; keyinstitute</p>
-              <p className="mt-1">contacto@universidad.edu</p>
+      {/* FOOTER*/}
+      <footer className="bg-transparent text-white py-8 relative z-10">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <Link
+              to="/"
+              className="flex items-center justify-center relative group"
+            >
+              <img
+                src="/reservas.png"
+                alt="Sistema de Reservas"
+                className="w-12 h-12 object-contain transition-all duration-500 group-hover:brightness-125 group-hover:scale-110 drop-shadow-lg"
+              />
+            </Link>
+            <div className="text-center">
+              <p className="text-gray-300 text-lg font-semibold">
+                Sistema de Reservas
+              </p>
+              <p className="text-gray-500 text-sm mt-1">
+                KeyInstitute - Plataforma Académica
+              </p>
             </div>
           </div>
         </div>

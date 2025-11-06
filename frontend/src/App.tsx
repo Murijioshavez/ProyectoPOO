@@ -64,34 +64,6 @@ const MainApp: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Actividad reciente */}
-      <section className="bg-white rounded-2xl shadow-md p-8 border border-[#F5F500]">
-        <h3 className="text-2xl font-bold text-[#000] mb-6">
-          Actividad Reciente
-        </h3>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-[#F7F7F7] rounded-lg border-l-4 border-[#31F483]">
-            <div className="flex items-center space-x-3">
-              <div className="w-3 h-3 bg-[#31F483] rounded-full"></div>
-              <span className="text-[#000] font-medium">
-                Juan Pérez — Sala 101 confirmada
-              </span>
-            </div>
-            <span className="text-[#7E7D8A] text-sm">Hace 2 horas</span>
-          </div>
-
-          <div className="flex items-center justify-between p-4 bg-[#F7F7F7] rounded-lg border-l-4 border-[#F5F500]">
-            <div className="flex items-center space-x-3">
-              <div className="w-3 h-3 bg-[#F5F500] rounded-full"></div>
-              <span className="text-[#000] font-medium">
-                María García — Sala 203 pendiente
-              </span>
-            </div>
-            <span className="text-[#7E7D8A] text-sm">Hace 5 horas</span>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
