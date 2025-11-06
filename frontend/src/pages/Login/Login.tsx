@@ -52,26 +52,31 @@ const Login: React.FC = () => {
     });
   }
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Iniciar Sesión</h2>
-        <p className="text-center mb-8">Sistema de Gestión de Reservas</p>
 
-        {/* Botón Google */}
-        <button
-          onClick={onGoogleSignIn}
-          disabled={loading}
-          className="w-full bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 rounded-lg font-medium transition duration-200 flex items-center justify-center gap-3"
-        >
-          <GoogleIcon />
-          {loading ? "Conectando…" : "Entrar con Google"}
-        </button>
-
-        {msg && <p className="mt-4 text-center text-sm text-red-600">{msg}</p>}
-      </div>
+return (
+  <div className="min-h-screen flex items-center justify-center bg-gray-50 relative">
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="w-[400px] h-[400px] bg-[rgb(0,109,255)] rounded-3xl blur-3xl opacity-30"></div>
     </div>
-  );
+
+    <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl relative z-10">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Iniciar Sesión</h2>
+      <p className="text-center mb-8">Sistema de Gestión de Reservas</p>
+
+      {/* Botón Google */}
+      <button
+        onClick={onGoogleSignIn}
+        disabled={loading}
+        className="w-full bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 rounded-lg font-medium transition duration-200 flex items-center justify-center gap-3"
+      >
+        <GoogleIcon />
+        {loading ? "Conectando…" : "Entrar con Google"}
+      </button>
+
+      {msg && <p className="mt-4 text-center text-sm text-red-600">{msg}</p>}
+    </div>
+  </div>
+);
 };
 
 export default Login;
