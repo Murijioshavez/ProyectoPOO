@@ -34,7 +34,8 @@ interface Sala {
 }
 
 export interface Evento extends RBCEvent {
-  salaId: string
+  resourceId: string,
+  salaId: string,
 }
 
 interface SchedulerSalasProps {
@@ -60,31 +61,45 @@ const SchedulerSalas: React.FC<SchedulerSalasProps> = ({ fechaBase }) => {
     { id: "sala7", name: "Sala 7", color: "#ffffff", bgColor: "#ffbb3b" },
   ]
 
+  const recursos = [
+    { resourceId: "sala1", resourceTitle: "Sala 1" },
+    { resourceId: "sala2", resourceTitle: "Sala 2" },
+    { resourceId: "sala3", resourceTitle: "Sala 3" },
+    { resourceId: "sala4", resourceTitle: "Sala 4" },
+    { resourceId: "sala5", resourceTitle: "Sala 5" },
+    { resourceId: "sala6", resourceTitle: "Sala 6" },
+    { resourceId: "sala7", resourceTitle: "Sala 7" },
+  ];
+
+
   // ---- Eventos del día ----
   const eventos: Evento[] = [
     {
       title: "Mentoría con Juan Pérez",
       start: new Date(y, m, d, 9, 0),
       end: new Date(y, m, d, 10, 0),
+      resourceId: "sala1",
       salaId: "sala1",
     },
     {
       title: "Reserva María García",
       start: new Date(y, m, d, 9, 0),
       end: new Date(y, m, d, 10, 0),
+      resourceId: "sala3",
       salaId: "sala3",
     },
     {
       title: "Mentoría Backend",
       start: new Date(y, m, d, 9, 0),
       end: new Date(y, m, d, 10, 0),
+      resourceId: "sala5",
       salaId: "sala5",
     },
   ]
 
   // ---- Estilo dinámico según sala ----
   const eventPropGetter = (event: Evento) => {
-    const sala = salas.find((s) => s.id === event.salaId)
+    const sala = salas.find((s) => s.id === event.resourceId)
     const backgroundColor = sala?.bgColor ?? "#3174ad"
     const color = sala?.color ?? "white"
     return {
@@ -102,7 +117,7 @@ const SchedulerSalas: React.FC<SchedulerSalasProps> = ({ fechaBase }) => {
   // ---- Textos en español ----
   const messages = useMemo(
     () => ({
-   
+
       month: "Mes",
       week: "Semana",
       day: "Día",
@@ -113,25 +128,30 @@ const SchedulerSalas: React.FC<SchedulerSalasProps> = ({ fechaBase }) => {
   )
 
   return (
- <div className="w-full text-black bg-white rounded-2xl shadow-md border border-gray-200 p-4">
-  <div > {/* ⬅️ dinámico */}
-    <Calendar
-      localizer={localizer}
-      events={eventos}
-      defaultView="day"
-      views={["day"]}
-      step={30}
-      timeslots={2}
-      min={new Date(2025, 10, 6, 7, 0)}
-      max={new Date(2025, 10, 6, 20, 0)}
-      style={{ height: "100%" }}
-      eventPropGetter={eventPropGetter}
-      culture="es"
-      messages={messages}
-      toolbar={false} // opcional si querés eliminar botones del header
-    />
-  </div>
-</div>
+    <div className="w-full text-black bg-white rounded-2xl shadow-md border border-gray-200 p-4">
+      <div > {/* ⬅️ dinámico */}
+        <Calendar
+          localizer={localizer}
+          events={eventos}
+          startAccessor="start"
+          endAccessor="end"
+          titleAccessor="title"
+              eventPropGetter={eventPropGetter}
+          resources={recursos}               // ← Aquí están las salas
+          resourceIdAccessor="resourceId"    // ← campo identificador
+          resourceTitleAccessor="resourceTitle" // ← campo de nombre visible
+          defaultView="day"
+          views={["day"]}
+          step={30}
+          timeslots={2}
+          toolbar={false} // opcional si querés eliminar botones del header
+          min={new Date(y, m, d, 7, 0)}
+          max={new Date(y, m, d, 19, 0)}
+        />
+
+
+      </div>
+    </div>
   )
 }
 
