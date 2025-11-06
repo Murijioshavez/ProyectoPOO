@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <img
                 src="/reservas.png"
                 alt="KeyInstitute - Sistema de Reservas"
-                className="w-16 h-16 lg:w-20 lg:h-20 object-contain transition-all duration-500 group-hover:brightness-125 group-hover:scale-110 drop-shadow-2xl"
+                className="w-16 h-16 lg:w-32 lg:h-32 object-contain transition-all duration-500 group-hover:brightness-125 group-hover:scale-110 drop-shadow-2xl"
               />
             </Link>
             {/* Navegación */}
@@ -45,7 +45,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   to={path}
                   className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
                     isActive(path)
-                      ? "bg-gradient-to-r from-[#31E083] to-[#F5F500] text-gray-900 shadow-lg"
+                      ? "bg-gradient-to-r from-[#006DFF] to-[#8E4BFB] text-white shadow-lg shadow-[#006DFF]/40"
                       : "bg-gray-800/80 text-white border border-gray-600 hover:bg-gradient-to-r hover:from-[#006DFF] hover:to-[#8E4BFB] hover:border-transparent hover:shadow-lg hover:shadow-[#006DFF]/30"
                   }`}
                 >
@@ -75,7 +75,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <img
                 src="/reservas.png"
                 alt="Sistema de Reservas"
-                className="w-12 h-12 object-contain transition-all duration-500 group-hover:brightness-125 group-hover:scale-110 drop-shadow-lg"
+                className="w-30 h-30 object-contain transition-all duration-500 group-hover:brightness-125 group-hover:scale-110 drop-shadow-lg"
               />
             </Link>
             <div className="text-center">
