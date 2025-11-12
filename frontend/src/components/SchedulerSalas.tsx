@@ -1,5 +1,5 @@
 // src/components/SchedulerSalas.tsx
-import React, { useMemo } from "react"
+import React, { useMemo, useEffect, useState } from "react"
 import {
   Calendar,
   dateFnsLocalizer,
@@ -8,13 +8,9 @@ import {
 import { format, parse, startOfWeek, getDay } from "date-fns"
 import { es } from "date-fns/locale"
 import "react-big-calendar/lib/css/react-big-calendar.css"
+import { escucharReservas } from "../api/reservaService"
+import type { ReservaConId } from "../api/reservaService"
 
-
-const CustomToolbar = ({ label }: { label: string }) => (
-  <div className="rbc-toolbar text-center py-3 font-semibold text-gray-700">
-    {label}
-  </div>
-);
 // ---- Localización ----
 const locales = { es }
 const localizer = dateFnsLocalizer({
@@ -44,6 +40,8 @@ interface SchedulerSalasProps {
 
 // ---- Componente principal ----
 const SchedulerSalas: React.FC<SchedulerSalasProps> = ({ fechaBase }) => {
+  const [reservas, setReservas] = useState<ReservaConId[]>([])
+
   // Determina la fecha a mostrar
   const hoy = fechaBase ?? new Date()
   const y = hoy.getFullYear()
@@ -69,11 +67,33 @@ const SchedulerSalas: React.FC<SchedulerSalasProps> = ({ fechaBase }) => {
     { resourceId: "sala5", resourceTitle: "Sala 5" },
     { resourceId: "sala6", resourceTitle: "Sala 6" },
     { resourceId: "sala7", resourceTitle: "Sala 7" },
-  ];
+  ]
 
+  // ---- Escuchar reservas en tiempo real ----
+  useEffect(() => {
+    console.log("Montando listener de reservas...")
+    
+    const unsubscribe = escucharReservas((data: ReservaConId[]) => {
+      console.log("Data recibida desde Firebase:", data)
 
-  // ---- Eventos del día ----
-  const eventos: Evento[] = [
+      if (!Array.isArray(data)) {
+        console.warn("escucharReservas devolvió un valor no válido:", data)
+        setReservas([])
+        return
+      }
+
+      setReservas(data)
+      console.log("📅 Total de reservas cargadas:", data.length)
+    })
+
+    return () => {
+      console.log("Limpiando listener de reservas...")
+      unsubscribe()
+    }
+  }, [])
+
+  // ---- Eventos del día (muestras + reservas reales) ----
+  const eventosMuestra: Evento[] = [
     {
       title: "Mentoría con Juan Pérez",
       start: new Date(y, m, d, 9, 0),
@@ -96,6 +116,10 @@ const SchedulerSalas: React.FC<SchedulerSalasProps> = ({ fechaBase }) => {
       salaId: "sala5",
     },
   ]
+console.log(eventosMuestra)
+console.log(reservas)
+  // Combinar eventos de muestra con reservas reales
+  const eventos = [ ...reservas]
 
   // ---- Estilo dinámico según sala ----
   const eventPropGetter = (event: Evento) => {
@@ -117,7 +141,6 @@ const SchedulerSalas: React.FC<SchedulerSalasProps> = ({ fechaBase }) => {
   // ---- Textos en español ----
   const messages = useMemo(
     () => ({
-
       month: "Mes",
       week: "Semana",
       day: "Día",
@@ -129,27 +152,26 @@ const SchedulerSalas: React.FC<SchedulerSalasProps> = ({ fechaBase }) => {
 
   return (
     <div className="w-full text-black bg-white rounded-2xl shadow-md border border-gray-200 p-4">
-      <div > {/* ⬅️ dinámico */}
+      <div className="rbc-calendar">
         <Calendar
           localizer={localizer}
           events={eventos}
           startAccessor="start"
           endAccessor="end"
           titleAccessor="title"
-              eventPropGetter={eventPropGetter}
-          resources={recursos}               // ← Aquí están las salas
-          resourceIdAccessor="resourceId"    // ← campo identificador
-          resourceTitleAccessor="resourceTitle" // ← campo de nombre visible
+          eventPropGetter={eventPropGetter}
+          resources={recursos}
+          resourceIdAccessor="resourceId"
+          resourceTitleAccessor="resourceTitle"
           defaultView="day"
           views={["day"]}
           step={30}
           timeslots={2}
-          toolbar={false} // opcional si querés eliminar botones del header
+          messages={messages}
+          toolbar={false}
           min={new Date(y, m, d, 7, 0)}
           max={new Date(y, m, d, 19, 0)}
         />
-
-
       </div>
     </div>
   )
