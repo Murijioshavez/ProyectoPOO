@@ -8,6 +8,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
+  const usuario = localStorage.getItem("usuario");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#000000] via-[#0A1428] to-[#006DFF] flex flex-col text-white overflow-hidden">
@@ -17,24 +18,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-[#31E083] rounded-full blur-[70px] opacity-15"></div>
       </div>
 
-      {/* HEADER*/}
+      {/* HEADER */}
       <header className="bg-transparent text-white pt-6 pb-4 relative z-10">
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-            {/*logo*/}
+
+            {/* logo */}
             <Link
               to="/"
               className="flex items-center justify-center lg:justify-start mb-4 lg:mb-0 relative group"
             >
               <img
                 src="/reservas.png"
-                alt="KeyInstitute - Sistema de Reservas"
+                alt="Sistema de Reservas"
                 className="w-16 h-16 lg:w-32 lg:h-32 object-contain transition-all duration-500 group-hover:brightness-125 group-hover:scale-110 drop-shadow-2xl"
               />
             </Link>
+
             {/* Navegación */}
             <nav className="flex flex-wrap gap-2 justify-center lg:justify-end relative">
-              {[
+              {[ 
                 { path: "/", label: "Inicio" },
                 { path: "/reservas", label: "Salas" },
                 { path: "/reservas/crear", label: "Nueva Reserva" },
@@ -54,38 +57,33 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               ))}
             </nav>
           </div>
+
+          {/**/}
+          {usuario && (
+            <p className="text-xl mt-4 font-semibold tracking-wide text-center lg:text-left">
+              Bienvenido, {usuario}
+            </p>
+          )}
         </div>
       </header>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <main className="flex-1 container mx-auto px-6 py-8 relative z-10">
-        <div className="backdrop-blur-md bg-gray-800/60 rounded-3xl border border-gray-600 shadow-2xl p-8 transition-all duration-500 hover:border-[#006DFF] hover:shadow-[0_0_40px_rgba(0,109,255,0.2)]">
+        <div className="backdrop-blur-md bg-gray-800/60 rounded-3xl border border-gray-600 shadow-2xl p-8">
           {children}
         </div>
       </main>
 
-      {/* FOOTER*/}
+      {/* FOOTER */}
       <footer className="bg-transparent text-white py-8 relative z-10">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col items-center justify-center gap-4">
-            <Link
-              to="/"
-              className="flex items-center justify-center relative group"
-            >
-              <img
-                src="/reservas.png"
-                alt="Sistema de Reservas"
-                className="w-30 h-30 object-contain transition-all duration-500 group-hover:brightness-125 group-hover:scale-110 drop-shadow-lg"
-              />
-            </Link>
-            <div className="text-center">
-              <p className="text-gray-300 text-lg font-semibold">
-                Sistema de Reservas
-              </p>
-              <p className="text-gray-500 text-sm mt-1">
-                KeyInstitute - Plataforma Académica
-              </p>
-            </div>
+          <div className="flex flex-col items-center gap-4">
+            <img
+              src="/reservas.png"
+              className="w-30 h-30 object-contain transition-all duration-500 drop-shadow-lg"
+            />
+            <p className="text-gray-300 text-lg font-semibold">Sistema de Reservas</p>
+            <p className="text-gray-500 text-sm">KeyInstitute</p>
           </div>
         </div>
       </footer>
