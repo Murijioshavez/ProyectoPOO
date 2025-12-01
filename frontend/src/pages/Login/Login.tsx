@@ -10,23 +10,37 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  function saveUserToLocalStorage(user: any) {
+    if (!user) return;
+
+    const nombreCompleto = user.displayName || "Usuario";
+    const partes = nombreCompleto.split(" ");
+
+    const usuario = {
+      nombres: partes.slice(0, -1).join(" ") || partes[0] || "Usuario",
+      apellidos: partes.length > 1 ? partes.slice(-1).join(" ") : "",
+      email: user.email || "",
+      foto: user.photoURL || "",
+    };
+
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+  }
 
   useEffect(() => {
     (async () => {
       const hasRedirect = window.location.href.includes("oauthredirect");
-      if (!hasRedirect) return; 
+      if (!hasRedirect) return;
 
       try {
         const res = await handleGoogleRedirectResult();
         if (res) {
-          const nombre = res.user?.displayName || "Usuario";
-          localStorage.setItem("usuario", nombre);
+          saveUserToLocalStorage(res.user);
 
           await sendTokenToBackend(res.idToken);
-          navigate("/dashboard", { replace: true });
+          navigate("/", { replace: true });
         }
       } catch (e: any) {
-        setMsg(parseFirebaseError(e));
+        setMsg(e?.message || "Error desconocido");
       }
     })();
   }, [navigate]);
@@ -34,16 +48,16 @@ const Login: React.FC = () => {
   async function onGoogleSignIn() {
     setMsg(null);
     setLoading(true);
+
     try {
       const { idToken, user } = await loginWithGooglePopup();
 
-      const nombre = user?.displayName || "Usuario";
-      localStorage.setItem("usuario", nombre);
+      saveUserToLocalStorage(user);
 
       await sendTokenToBackend(idToken);
-      navigate("/dashboard", { replace: true });
+      navigate("/", { replace: true });
     } catch (e: any) {
-      setMsg(parseFirebaseError(e));
+      setMsg(e?.message || "Error desconocido");
     } finally {
       setLoading(false);
     }
@@ -57,11 +71,7 @@ const Login: React.FC = () => {
       body: JSON.stringify({ idToken }),
     });
   }
-
-  function parseFirebaseError(error: any): string {
-    return error?.message || "Error desconocido";
-  }
-
+  
   return (
     <div className="login-container">
       <h2>Iniciar Sesión</h2>

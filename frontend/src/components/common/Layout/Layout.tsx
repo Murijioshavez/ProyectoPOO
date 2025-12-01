@@ -8,8 +8,18 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
-  const usuario =   JSON.parse(localStorage.getItem("usuario") || "null");
 
+  let usuarioRaw = localStorage.getItem("usuario");
+  let usuario: any = null;
+
+  try {
+    usuario = usuarioRaw ? JSON.parse(usuarioRaw) : null;
+  } catch {
+    usuario = {
+      nombres: usuarioRaw || "Usuario",
+      apellidos: "",
+    };
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#000000] via-[#0A1428] to-[#006DFF] flex flex-col text-white overflow-hidden">
@@ -24,7 +34,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
 
-            {/* logo */}
+            {/* Logo */}
             <Link
               to="/"
               className="flex items-center justify-center lg:justify-start mb-4 lg:mb-0 relative group"
@@ -59,10 +69,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </nav>
           </div>
 
-          {/**/}
-          {usuario && (
+          {/* MENSAJE DE BIENVENIDA */}
+          {usuario && usuario.nombres && (
             <p className="text-xl mt-4 font-semibold tracking-wide text-center lg:text-left">
-              Bienvenido, {usuario.nombres} {usuario.apellidos}!
+              Bienvenido, {usuario.nombres} {usuario.apellidos}
             </p>
           )}
         </div>
