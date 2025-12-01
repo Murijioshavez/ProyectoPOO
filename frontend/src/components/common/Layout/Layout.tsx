@@ -8,7 +8,8 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
-  const usuario = localStorage.getItem("usuario");
+  const usuario =   JSON.parse(localStorage.getItem("usuario") || "null");
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#000000] via-[#0A1428] to-[#006DFF] flex flex-col text-white overflow-hidden">
@@ -61,7 +62,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/**/}
           {usuario && (
             <p className="text-xl mt-4 font-semibold tracking-wide text-center lg:text-left">
-              Bienvenido, {usuario}
+              Bienvenido, {usuario.nombres} {usuario.apellidos}!
             </p>
           )}
         </div>
