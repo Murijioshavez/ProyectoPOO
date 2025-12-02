@@ -1,5 +1,6 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContext";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -7,19 +8,37 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
+  
   const isActive = (path: string) => location.pathname === path;
 
-  let usuarioRaw = localStorage.getItem("usuario");
-  let usuario: any = null;
+  // Forzar re-render cuando cambie la autenticación
+  const [forceUpdate, setForceUpdate] = React.useState(0);
 
-  try {
-    usuario = usuarioRaw ? JSON.parse(usuarioRaw) : null;
-  } catch {
-    usuario = {
-      nombres: usuarioRaw || "Usuario",
-      apellidos: "",
+  useEffect(() => {
+    const handleAuthChange = () => {
+      console.log('🔍 Layout: Evento auth-change recibido');
+      setForceUpdate(prev => prev + 1);
     };
-  }
+
+    window.addEventListener('auth-change', handleAuthChange);
+    
+    return () => {
+      window.removeEventListener('auth-change', handleAuthChange);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
+  // Solo para debugging
+  useEffect(() => {
+    console.log('🔍 Layout: isAuthenticated =', isAuthenticated);
+    console.log('🔍 Layout: user =', user);
+  }, [isAuthenticated, user, forceUpdate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#000000] via-[#0A1428] to-[#006DFF] flex flex-col text-white overflow-hidden">
@@ -33,7 +52,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <header className="bg-transparent text-white pt-6 pb-4 relative z-10">
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-
             {/* Logo */}
             <Link
               to="/"
@@ -48,32 +66,98 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* Navegación */}
             <nav className="flex flex-wrap gap-2 justify-center lg:justify-end relative">
-              {[ 
-                { path: "/", label: "Inicio" },
-                { path: "/reservas", label: "Salas" },
-                { path: "/reservas/crear", label: "Nueva Reserva" },
-                { path: "/login", label: "Iniciar Sesión" },
-              ].map(({ path, label }) => (
+              {/* Enlace a Inicio - siempre visible */}
+              <Link
+                to="/"
+                className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+                  isActive("/")
+                    ? "bg-gradient-to-r from-[#006DFF] to-[#8E4BFB] text-white shadow-lg shadow-[#006DFF]/40"
+                    : "bg-gray-800/80 text-white border border-gray-600 hover:bg-gradient-to-r hover:from-[#006DFF] hover:to-[#8E4BFB] hover:border-transparent hover:shadow-lg hover:shadow-[#006DFF]/30"
+                }`}
+              >
+                Inicio
+              </Link>
+
+              {/* Enlace a Salas - siempre visible */}
+              <Link
+                to="/reservas"
+                className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+                  isActive("/reservas")
+                    ? "bg-gradient-to-r from-[#006DFF] to-[#8E4BFB] text-white shadow-lg shadow-[#006DFF]/40"
+                    : "bg-gray-800/80 text-white border border-gray-600 hover:bg-gradient-to-r hover:from-[#006DFF] hover:to-[#8E4BFB] hover:border-transparent hover:shadow-lg hover:shadow-[#006DFF]/30"
+                }`}
+              >
+                Salas
+              </Link>
+
+              {/* Enlace a Nueva Reserva - solo visible si está autenticado */}
+              {isAuthenticated && (
                 <Link
-                  key={path}
-                  to={path}
+                  to="/reservas/crear"
                   className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
-                    isActive(path)
-                      ? "bg-gradient-to-r from-[#006DFF] to-[#8E4BFB] text-white shadow-lg shadow-[#006DFF]/40"
-                      : "bg-gray-800/80 text-white border border-gray-600 hover:bg-gradient-to-r hover:from-[#006DFF] hover:to-[#8E4BFB] hover:border-transparent hover:shadow-lg hover:shadow-[#006DFF]/30"
+                    isActive("/reservas/crear")
+                      ? "bg-gradient-to-r from-[#31E083] to-[#31F483] text-white shadow-lg shadow-[#31F483]/40"
+                      : "bg-gray-800/80 text-white border border-gray-600 hover:bg-gradient-to-r hover:from-[#31E083] hover:to-[#31F483] hover:border-transparent hover:shadow-lg hover:shadow-[#31F483]/30"
                   }`}
                 >
-                  {label}
+                  Nueva Reserva
                 </Link>
-              ))}
+              )}
+
+              {/* Botón de Login/Logout */}
+              {isAuthenticated ? (
+                <>
+                  {/* Botón de Perfil si hay usuario */}
+                  {user && user.foto && (
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-800/80 border border-gray-600">
+                      <img 
+                        src={user.foto} 
+                        alt={user.nombres}
+                        className="w-8 h-8 rounded-full"
+                      />
+                      <span className="text-sm font-medium">
+                        {user.nombres}
+                      </span>
+                    </div>
+                  )}
+                  
+                  {/* Botón de Logout */}
+                  <button
+                    onClick={handleLogout}
+                    className="px-5 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-[#FF416C] to-[#FF4B2B] text-white border border-transparent hover:shadow-lg hover:shadow-[#FF416C]/30"
+                  >
+                    Cerrar Sesión
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+                    isActive("/login")
+                      ? "bg-gradient-to-r from-[#8E4BFB] to-[#006DFF] text-white shadow-lg shadow-[#8E4BFB]/40"
+                      : "bg-gradient-to-r from-[#8E4BFB] to-[#006DFF] text-white border border-transparent hover:shadow-lg hover:shadow-[#8E4BFB]/30"
+                  }`}
+                >
+                  Iniciar Sesión
+                </Link>
+              )}
             </nav>
           </div>
 
           {/* MENSAJE DE BIENVENIDA */}
-          {usuario && usuario.nombres && (
-            <p className="text-xl mt-4 font-semibold tracking-wide text-center lg:text-left">
-              Bienvenido, {usuario.nombres} {usuario.apellidos}
-            </p>
+          {user && user.nombres && (
+            <div className="mt-6 flex flex-col items-center lg:items-start">
+              <p className="text-2xl font-bold tracking-wide text-center lg:text-left">
+                Bienvenido, <span className="bg-gradient-to-r from-[#31F483] to-[#8E4BFB] bg-clip-text text-transparent">
+                  {user.nombres} {user.apellidos}
+                </span>
+              </p>
+              {isAuthenticated && (
+                <p className="text-gray-300 text-sm mt-2">
+                  ¡Ahora puedes crear nuevas reservas de salas!
+                </p>
+              )}
+            </div>
           )}
         </div>
       </header>
@@ -95,6 +179,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             />
             <p className="text-gray-300 text-lg font-semibold">Sistema de Reservas</p>
             <p className="text-gray-500 text-sm">KeyInstitute</p>
+            <div className="mt-4 flex gap-4">
+              {isAuthenticated ? (
+                <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-medium">
+                  Sesión activa ✓
+                </span>
+              ) : (
+                <span className="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-300 text-xs font-medium">
+                  No autenticado
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </footer>
